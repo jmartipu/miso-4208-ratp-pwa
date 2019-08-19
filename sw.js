@@ -45,7 +45,7 @@ if (workbox) {
   },
   {
     "url": "index.html",
-    "revision": "68895d203fedc87be8728f086db650c1"
+    "revision": "620db885c6747557b527c7ce2362cfe8"
   },
   {
     "url": "manifest.json",
@@ -56,8 +56,12 @@ if (workbox) {
     "revision": "3581ac6982b587a1b5528542be2bab06"
   },
   {
+    "url": "scripts/install.js",
+    "revision": "9fb5fa28cadcbc66c80e1440821445e4"
+  },
+  {
     "url": "service-worker.js",
-    "revision": "84bdf6e16cc13ef537a1dbd7ca0e121e"
+    "revision": "63a6720fcfae0a61e8517bfe7b58234c"
   },
   {
     "url": "styles/inline.css",
@@ -70,7 +74,7 @@ if (workbox) {
 ]);
     workbox.routing.registerRoute(
       /\.js$/,
-      new workbox.strategies.NetworkFirst(
+      new workbox.strategies.CacheFirst(
           {
               cacheName: 'js-cache',
           }
@@ -80,7 +84,7 @@ if (workbox) {
       // Cache CSS files.
       /\.css$/,
       // Use cache but update in the background.
-      new workbox.strategies.NetworkFirst({
+      new workbox.strategies.CacheFirst({
         // Use a custom cache name.
         cacheName: 'css-cache',
       })
