@@ -40,10 +40,6 @@ if (workbox) {
     "revision": "b3fb4ff3f158e6588f3846415407c8d5"
   },
   {
-    "url": "manifest - copia.json",
-    "revision": "de8234e7b243a1b3718258b498842fbd"
-  },
-  {
     "url": "manifest.json",
     "revision": "de8234e7b243a1b3718258b498842fbd"
   },
