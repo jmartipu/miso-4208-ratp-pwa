@@ -4,6 +4,14 @@ if (workbox) {
     console.log(`Yay! Workbox is loaded 🎉`);
     workbox.precaching.precacheAndRoute([
   {
+    "url": "404.html",
+    "revision": "0a27a4163254fc8fce870c8cc3a3f94f"
+  },
+  {
+    "url": "firebase.json",
+    "revision": "eba4c1149475e78daca63e518b923b72"
+  },
+  {
     "url": "images/ic_add_white_24px.svg",
     "revision": "b09442e8f4b45894cf21566f0813453c"
   },
@@ -37,7 +45,7 @@ if (workbox) {
   },
   {
     "url": "index.html",
-    "revision": "b3fb4ff3f158e6588f3846415407c8d5"
+    "revision": "68895d203fedc87be8728f086db650c1"
   },
   {
     "url": "manifest.json",
@@ -49,7 +57,7 @@ if (workbox) {
   },
   {
     "url": "service-worker.js",
-    "revision": "8fea289c27af1b914672dee96f750d58"
+    "revision": "84bdf6e16cc13ef537a1dbd7ca0e121e"
   },
   {
     "url": "styles/inline.css",
@@ -57,19 +65,53 @@ if (workbox) {
   },
   {
     "url": "workbox-config.js",
-    "revision": "fd6729fe53fb74532dc482b90a53875a"
+    "revision": "b992612ef8c22868e13ac0f5ad60546b"
   }
 ]);
+    workbox.routing.registerRoute(
+      /\.js$/,
+      new workbox.strategies.NetworkFirst(
+          {
+              cacheName: 'js-cache',
+          }
+      )
+    );
+    workbox.routing.registerRoute(
+      // Cache CSS files.
+      /\.css$/,
+      // Use cache but update in the background.
+      new workbox.strategies.NetworkFirst({
+        // Use a custom cache name.
+        cacheName: 'css-cache',
+      })
+    );
+    workbox.routing.registerRoute(
+      // Cache image files.
+      /\.(?:png|jpg|jpeg|svg|gif)$/,
+      // Use the cache if it's available.
+      new workbox.strategies.CacheFirst({
+        // Use a custom cache name.
+        cacheName: 'image-cache',
+        plugins: [
+          new workbox.expiration.Plugin({
+            // Cache only 20 images.
+            maxEntries: 20,
+            // Cache for a maximum of a week.
+            maxAgeSeconds: 7 * 24 * 60 * 60,
+          })
+        ],
+      })
+    );
     const CACHE_NAME = 'static-cache-v1.2';
     const DATA_CACHE_NAME = 'data-cache-v1.2';
     // CODELAB: Update cache names any time any of the cached files change.
     const FILES_TO_CACHE = [
         '/',
-        '/index.html',
-        '/scripts/app.js',
-        '/styles/inline.css',
-        '/images/ic_add_white_24px.svg',
-        '/images/ic_refresh_white_24px.svg',
+        // '/index.html',
+        // '/scripts/app.js',
+        // '/styles/inline.css',
+        // '/images/ic_add_white_24px.svg',
+        // '/images/ic_refresh_white_24px.svg',
     ];
     self.addEventListener('install', (evt) => {
       console.log('[ServiceWorker] Install');

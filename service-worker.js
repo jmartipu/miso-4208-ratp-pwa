@@ -4,16 +4,50 @@ if (workbox) {
     console.log(`Yay! Workbox is loaded 🎉`);
     workbox.precaching.precacheAndRoute([
     ]);
+    workbox.routing.registerRoute(
+      /\.js$/,
+      new workbox.strategies.NetworkFirst(
+          {
+              cacheName: 'js-cache',
+          }
+      )
+    );
+    workbox.routing.registerRoute(
+      // Cache CSS files.
+      /\.css$/,
+      // Use cache but update in the background.
+      new workbox.strategies.NetworkFirst({
+        // Use a custom cache name.
+        cacheName: 'css-cache',
+      })
+    );
+    workbox.routing.registerRoute(
+      // Cache image files.
+      /\.(?:png|jpg|jpeg|svg|gif)$/,
+      // Use the cache if it's available.
+      new workbox.strategies.CacheFirst({
+        // Use a custom cache name.
+        cacheName: 'image-cache',
+        plugins: [
+          new workbox.expiration.Plugin({
+            // Cache only 20 images.
+            maxEntries: 20,
+            // Cache for a maximum of a week.
+            maxAgeSeconds: 7 * 24 * 60 * 60,
+          })
+        ],
+      })
+    );
     const CACHE_NAME = 'static-cache-v1.2';
     const DATA_CACHE_NAME = 'data-cache-v1.2';
     // CODELAB: Update cache names any time any of the cached files change.
     const FILES_TO_CACHE = [
         '/',
-        '/index.html',
-        '/scripts/app.js',
-        '/styles/inline.css',
-        '/images/ic_add_white_24px.svg',
-        '/images/ic_refresh_white_24px.svg',
+        // '/index.html',
+        // '/scripts/app.js',
+        // '/styles/inline.css',
+        // '/images/ic_add_white_24px.svg',
+        // '/images/ic_refresh_white_24px.svg',
     ];
     self.addEventListener('install', (evt) => {
       console.log('[ServiceWorker] Install');
